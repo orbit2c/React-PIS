@@ -44,6 +44,35 @@ By default, the scanner will search for the following common issues:
 If the scanner detects any of these issues, it will output a report of the files and lines of code that contain them.
 
 
+## API
+    
+    You can then use this function in your API by requiring it in your Node.js 
+    server file and calling it with the desired directory path. Here's an example:
+    
+    const express = require('express');
+const rpis = require('./rpis');
+
+const app = express();
+const PORT = 3000;
+
+app.get('/analyze', (req, res) => {
+  const { directory } = req.query;
+
+  if (!directory) {
+    return res.status(400).json({
+      error: 'Directory path is required.'
+    });
+  }
+
+  const result = rpis(directory);
+
+  return res.json(result);
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
+    
 ## Customization
 
 If you want to customize the scanner to search for additional issues, you can modify the checkForErrors function in the index.js file. You can also customize the list of file extensions to scan by modifying the fileExtensions array in the index.js file.
